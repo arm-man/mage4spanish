@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<title>BE cards</title>
+<style type="text/css">
+* {box-sizing: border-box;}
+#container {position: relative; width: 1024px; margin: auto; text-align: center; color: black;}
+.add-button, .delete-button, #previous-question, #next-question {margin: 0 0.5em;}
+#header {min-height: 5em;}
+#answer, #question {margin: 0.6em 0;}
+#header label {margin: 0 0.1em;}
+#phrase-area {position: absolute; left: 0; width: 340px;}
+#input-phrase:focus {background-color: PaleTurquoise;}
+#phrases div {margin: 1em 0;}
+#phrase-details {visibility: hidden; margin: 1em 0 1em 340px; text-align: center;}
+#phrase-details-header {margin: 0 200px}
+#phrase-details-header label {float: left; width: 3em;}
+#alternative-area {position: absolute; left: 340px; width: 340px;}
+#wrong-area {margin: 0 0 0 340px;}
+</style>
+</head>
+<body>
+<div id="container">
+<div id="header">
+  <div id="info"><img class="add-button" id="add-new-question" src="add.png" alt="add new question" style="width:16px;height:16px"/>
+    <img class="delete-button" id="delete-question" src="delete.png" alt="delete question" style="width:16px;height:16px"/>
+    <img id="previous-question" src="arrow-left.png" alt="previous question" style="width:16px;height:16px"/>Question # <span id="question-number">0</span>
+    <img id="next-question" src="arrow-right.png" alt="next question" style="width:16px;height:16px"/>
+  </div>
+  <div id="question"><label>Question:</label><input id="edit-english-phrase" type="text" spellcheck="true" lang="en" value=""></div>
+  <div id="answer"><label>Answer:</label><input id="edit-spanish-phrase" type="text" spellcheck="true" value=""></div>
+</div>
+<hr>
+<div id="phrase-area">
+  <div>Answer</div>
+  <div><input id="input-phrase" type="text" spellcheck="true"><img class="add-button" id="add-phrase-button" src="add.png" alt="add phrase" style="width:16px;height:16px"/></div>
+  <div id="phrases"></div>
+</div>
+<div id="phrase-details">
+  <div id="phrase-details-header">
+    <div><label>Answer:</label><input id="edit-selected-phrase" type="text" spellcheck="true" value=""></div>
+  </div>
+  <hr>
+  <div id="alternative-area">
+    <div>Alternatives</div>
+    <input id="input-alternative" type="text" spellcheck="true"><img class="add-button" id="add-alternative-button" src="add.png" alt="add alternative" style="width:16px;height:16px"/>
+  </div>
+  <div id="wrong-area">
+    <div>Wrong Answers</div>
+    <input id="input-wrong" type="text" spellcheck="true"><img class="add-button" id="add-wrong-button" src="add.png" alt="add wrong" style="width:16px;height:16px"/>
+  </div>
+</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="/mage4spanish-linux/BEcards.js"></script>
+</body>
+</html>
