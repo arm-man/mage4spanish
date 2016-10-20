@@ -13,8 +13,8 @@ var questionNumber = 0;
 
 $('#question-number').val(questionNumber);
 
-function fetchData(q) {
-  $url = "BEcards.php?q=" + q;
+function fetchData(id) {
+  $url = "BEcards.php?id=" + id;
   $.getJSON($url, '', function(data)
   {
     if (data == null) {
@@ -23,13 +23,17 @@ function fetchData(q) {
       var id = data[0];
       var question = data[1];
       var answer = data[2];
-
-      console.log("id=" + id + ", question=" + question + ", answerlist=" + answerlist);
     }
   });
 }
 
-fetchData(questionNumber);
+function saveData(table, id, question, answer) {
+  $.ajax({
+      type: "POST",
+      url: "BEcards.php",
+      data: {"t":table, "id":id, "q":question, "a":answer},
+  });
+}
 
 function deleteDetailListElement(event) {
   var thisIndex = 0;

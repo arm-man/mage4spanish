@@ -1,24 +1,20 @@
 <?php require_once('Globals.php');
-  $databaseName = "spanishdb";
   $tableName = "Questions";
 
-  if (isset($_GET['q'])) {
-    $q = $HTTP_GET_VARS['q'];
+  if (isset($_POST['t'])) {
     $mysqli = getNewMysqli();
-    $result = $mysqli->query("SELECT * FROM $tableName WHERE id=" + q);
-    if ($result == null) {
-      echo "null";
-    } else {
-      echo "here";
-      $row = $result->fetch_row();
-      echo json_encode($row);
-    }
+    $table = $_POST['t'];
+    $id = $_POST['id'];
+    $question = $_POST['q'];
+    $answer = $_POST['a'];
+    $result = $mysqli->query("INSERT INTO $table (id, question, answer) VALUES($id, '$question', '$answer') ON DUPLICATE KEY UPDATE question='$question',answer='$answer'") or die($mysqli->error);
   }
 
-  // procedural style
-  // $con = mysql_connect($host,$user,$pass);
-  // $dbs = mysql_select_db($databaseName, $con);
-  // $result = mysql_db_query("SELECT * FROM $tableName WHERE id=%d", $questionNumber);
-  // $array = mysql_fetch_row($result);
-  // echo json_encode($array);
+  else if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $mysqli = getNewMysqli();
+    $result = $mysqli->query("SELECT * FROM $tableName WHERE id=$id") or die($mysqli->error);
+    $row = $result->fetch_row();
+    echo json_encode($row);
+  }
 ?>
