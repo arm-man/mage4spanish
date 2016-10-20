@@ -9,9 +9,9 @@ console.log("Running script.");
 var alternatives = new Array(0);
 var wrongs = new Array(0);
 var selectedPhraseIndex = -1;
-var questionNumber = 0;
-
-$('#question-number').val(questionNumber);
+var questionNumber = 1;
+var prevQ;
+var prevA;
 
 function fetchData(id) {
   $url = "BEcards.php?id=" + id;
@@ -21,18 +21,29 @@ function fetchData(id) {
       console.log("null");
     } else {
       var id = data[0];
-      var question = data[1];
-      var answer = data[2];
+      var question = prevQ = data[1];
+      var answer = prevA = data[2];
+
+      $('#question-number').html(id);
+      $('#edit-english-phrase').val(question);
+      $('#edit-spanish-phrase').val(answer);
     }
   });
 }
 
-function saveData(table, id, question, answer) {
-  $.ajax({
-      type: "POST",
-      url: "BEcards.php",
-      data: {"t":table, "id":id, "q":question, "a":answer},
-  });
+function saveData() {
+  var question = $('#edit-english-phrase').val();
+  var answer = $('#edit-spanish-phrase').val();
+  if (question != prevQ || answer != prevA) {
+    prevQ = question;
+    prevA = answer;
+    $.ajax({
+        type: "POST",
+        url: "BEcards.php",
+        data: {"id":questionNumber, "q":question, "a":answer},
+    });
+    console.log("database updated");
+  }
 }
 
 function deleteDetailListElement(event) {
@@ -117,7 +128,13 @@ function addPhrase($elInputPhrase) {
   }
 }
 
+// Populate data
+fetchData(questionNumber);
+
 // Events
+$('#edit-english-phrase').on('blur', saveData);
+$('#edit-spanish-phrase').on('blur', saveData);
+
 $('#add-phrase-button').on('click', function() {addPhrase($('#input-phrase'));});
 $('#input-phrase').on('keypress', function (e) {if (e.which === 13) {addPhrase($('#input-phrase'));}});
 
