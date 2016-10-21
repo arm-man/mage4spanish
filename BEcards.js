@@ -9,7 +9,7 @@ console.log("Running script.");
 var alternatives = new Array(0);
 var wrongs = new Array(0);
 var selectedPhraseIndex = -1;
-var questionNumber = 1;
+var questionNumber;
 var prevQ;
 var prevA;
 
@@ -20,13 +20,19 @@ function fetchData(id) {
     if (data == null) {
       console.log("null");
     } else {
-      var id = data[0];
+      var questionNumber = data[0];
       var question = prevQ = data[1];
       var answer = prevA = data[2];
 
-      $('#question-number').html(id);
+      $('#question-number').html(questionNumber);
       $('#edit-english-phrase').val(question);
       $('#edit-spanish-phrase').val(answer);
+
+      if (questionNumber == 1) {
+        $('#previous-question').hide();
+      } else {
+        $('#previous-question').show();
+      }
     }
   });
 }
@@ -89,6 +95,7 @@ function addDetailListElement($elInput) {
   }
 }
 
+
 // TODO
 function deletePhrase() {
   if (selected) {
@@ -113,11 +120,6 @@ function addPhrase($elInputPhrase) {
   if ($elInputPhrase.val()) {
     var value = $elInputPhrase.val();
     $elInputPhrase.val(null);
-    if ($('#answer div').length == 0) {
-      $('#answer').append('<div>' + value + '</div>');
-    } else {
-      $('#answer div').append(' ' + value);
-    }
     $('#phrases').append('<div><button>' + value + '</button></div>');
     alternatives.push(new Array(0));
     wrongs.push(new Array(0));
@@ -128,8 +130,8 @@ function addPhrase($elInputPhrase) {
   }
 }
 
-// Populate data
-fetchData(questionNumber);
+// Start at question 1
+fetchData(1);
 
 // Events
 $('#edit-english-phrase').on('blur', saveData);
@@ -143,5 +145,8 @@ $('#input-alternative').on('keypress', function (e) {if (e.which === 13) {addDet
 
 $('#add-wrong-button').on('click', function() {addDetailListElement($('#input-wrong'));});
 $('#input-wrong').on('keypress', function(e) {if (e.which === 13) {addDetailListElement($('#input-wrong'));}});
+
+$('#previous-question').on('click', function() {fetchData(questionNumber - 1);});
+$('#next-question').on('click', function() {fetchData(questionNumber + 1);});
 
 });
