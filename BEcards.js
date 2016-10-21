@@ -10,8 +10,8 @@ var alternatives = new Array(0);
 var wrongs = new Array(0);
 var selectedPhraseIndex = -1;
 var questionNumber;
-var prevQ;
-var prevA;
+var currentQ;
+var currentA;
 
 function fetchData(id) {
   $url = "BEcards.php?id=" + id;
@@ -20,13 +20,13 @@ function fetchData(id) {
     if (data == null) {
       console.log("null");
     } else {
-      var questionNumber = data[0];
-      var question = prevQ = data[1];
-      var answer = prevA = data[2];
+      questionNumber = parseInt(data[0]);
+      currentQ = data[1];
+      currentA = data[2];
 
       $('#question-number').html(questionNumber);
-      $('#edit-english-phrase').val(question);
-      $('#edit-spanish-phrase').val(answer);
+      $('#edit-english-phrase').val(currentQ);
+      $('#edit-spanish-phrase').val(currentA);
 
       if (questionNumber == 1) {
         $('#previous-question').hide();
@@ -40,9 +40,9 @@ function fetchData(id) {
 function saveData() {
   var question = $('#edit-english-phrase').val();
   var answer = $('#edit-spanish-phrase').val();
-  if (question != prevQ || answer != prevA) {
-    prevQ = question;
-    prevA = answer;
+  if (question != currentQ || answer != currentA) {
+    currentQ = question;
+    currentA = answer;
     $.ajax({
         type: "POST",
         url: "BEcards.php",
