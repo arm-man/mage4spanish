@@ -33,11 +33,18 @@ function fetchData(id) {
       } else {
         $('#previous-question').show();
       }
+
+      index = 3;
+      while (index < data.length) {
+        if (data[index] != -1) {
+
+        }
+      }
     }
   });
 }
 
-function saveData() {
+function saveQuestionData() {
   var question = $('#edit-english-phrase').val();
   var answer = $('#edit-spanish-phrase').val();
   if (question != currentQ || answer != currentA) {
@@ -48,8 +55,14 @@ function saveData() {
         url: "BEcards.php",
         data: {"id":questionNumber, "q":question, "a":answer},
     });
-    console.log("database updated");
+    console.log("Questions table updated");
   }
+}
+
+function newPhrase(phrase) {
+  console.log("new Phrase");
+  $.ajax({type: "POST", url: "BEcards.php", data: {"id":questionNumber, "p":phrase, "i":selectedPhraseIndex + 1}});
+  console.log("new Phrase added");
 }
 
 function deleteDetailListElement(event) {
@@ -95,7 +108,6 @@ function addDetailListElement($elInput) {
   }
 }
 
-
 // TODO
 function deletePhrase() {
   if (selected) {
@@ -127,6 +139,7 @@ function addPhrase($elInputPhrase) {
     $elButton.on('click', function() {selectPhrase($elButton);});
     selectPhrase($elButton);
     $elInputPhrase.focus();
+    newPhrase(value);
   }
 }
 
@@ -134,8 +147,8 @@ function addPhrase($elInputPhrase) {
 fetchData(1);
 
 // Events
-$('#edit-english-phrase').on('blur', saveData);
-$('#edit-spanish-phrase').on('blur', saveData);
+$('#edit-english-phrase').on('blur', saveQuestionData);
+$('#edit-spanish-phrase').on('blur', saveQuestionData);
 
 $('#add-phrase-button').on('click', function() {addPhrase($('#input-phrase'));});
 $('#input-phrase').on('keypress', function (e) {if (e.which === 13) {addPhrase($('#input-phrase'));}});
